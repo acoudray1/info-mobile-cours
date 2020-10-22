@@ -157,6 +157,7 @@ async function setLocalStorage(title, description, image) {
 
 /**
  * getLocalStorage gets data n the local storage and add them to the articles list
+ * 
  */
 async function getLocalStorage() {
     let { keys } = await capacitorExports.Storage.keys();
