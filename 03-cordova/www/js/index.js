@@ -26,4 +26,7 @@ function onDeviceReady() {
 
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
     document.getElementById('deviceready').classList.add('ready');
+    document.getElementById('cordovaversion').innerHTML = "CORDOVA : " + cordova.version;
+    document.getElementById('devicemodel').innerHTML = "MODEL : " + device.model;
+    document.getElementById('uuid').innerHTML = "UUID : " + device.uuid;
 }

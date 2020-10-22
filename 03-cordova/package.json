@@ -18,7 +18,8 @@
   },
   "cordova": {
     "plugins": {
-      "cordova-plugin-whitelist": {}
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-device": {}
     },
     "platforms": [
       "browser",
@@ -26,6 +27,7 @@
     ]
   },
   "dependencies": {
-    "cordova-browser": "6.0.0"
+    "cordova-browser": "6.0.0",
+    "cordova-plugin-device": "2.0.3"
   }
 }
