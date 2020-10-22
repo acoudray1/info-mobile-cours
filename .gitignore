@@ -1,3 +1,8 @@
 01-pwa/node_modules/
+
 02-ionic-core/node_modules/
 
+03-cordova/node_modules/
+03-cordova/plugins/
+03-cordova/platforms/
+03-cordova/.DS_Store
