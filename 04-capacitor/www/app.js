@@ -7,6 +7,7 @@ fetch(DEV_FEST_GET_URL)
     })
     .then(function(data) {
         appendData(data);
+        getLocalStorage();
     })
     .catch(function(err) {
         console.log(err);
@@ -15,25 +16,37 @@ fetch(DEV_FEST_GET_URL)
 /**
  * appendData adds to the screen the different articles we need
  * 
- * @param {string} json 
+ * @param {string} json
  */
 function appendData(json) {
-    let mainContainer = document.getElementById("data");
     for (let i = 0; i < json.length; i++) {
-        let card = document.createElement("ion-card");
-        let img = document.createElement("img");
-        img.src = DEV_FEST_IMAGES_URL + json[i].image;
-        let cardHeader = document.createElement("ion-card-header");
-        let cardTitle = document.createElement("ion-card-title");
-        let cardContent = document.createElement("ion-card-content");
-        cardTitle.innerHTML = json[i].title;
-        cardContent.innerHTML = json[i].brief;
-        cardHeader.appendChild(cardTitle);
-        card.appendChild(img);
-        card.appendChild(cardHeader);
-        card.appendChild(cardContent);
-        mainContainer.appendChild(card);
+        createElementCard(json[i].title, json[i].brief, DEV_FEST_IMAGES_URL + json[i].image)
     }
+}
+
+/**
+ * createElementCard creates a new card for an article
+ * 
+ * @param {*} title 
+ * @param {*} brief 
+ * @param {*} image 
+ */
+function createElementCard(title, brief, image) {
+    let mainContainer = document.getElementById("data");
+    let card = document.createElement("ion-card");
+    card.id = title;
+    let img = document.createElement("img");
+    img.src = image;
+    let cardHeader = document.createElement("ion-card-header");
+    let cardTitle = document.createElement("ion-card-title");
+    let cardContent = document.createElement("ion-card-content");
+    cardTitle.innerHTML = title;
+    cardContent.innerHTML = brief;
+    cardHeader.appendChild(cardTitle);
+    card.appendChild(img);
+    card.appendChild(cardHeader);
+    card.appendChild(cardContent);
+    mainContainer.appendChild(card);
 }
 
 /**
@@ -44,14 +57,10 @@ async function takePicture() {
     const image = await capacitorExports.Camera.getPhoto({
         quality: 90,
         allowEditing: true,
-        resultType: capacitorExports.CameraResultType.Uri
+        resultType: capacitorExports.CameraResultType.base64String
     });
 
-    let imageUrl = image.webPath;
-    let newImage = document.createElement("img");
-    newImage.src = imageUrl;
-
-    presentModal(imageUrl);
+    presentModal(image.base64String);
 }
 
 customElements.define('modal-page', class extends HTMLElement {
@@ -84,15 +93,15 @@ customElements.define('modal-page', class extends HTMLElement {
 /**
  * presentModal displays the modal
  * 
- * @param {string} imageUrl 
+ * @param {string} image
  */
-function presentModal(imageUrl) {
+function presentModal(image) {
     // create the modal with the `modal-page` component
     const modalElement = document.createElement('ion-modal');
     modalElement.component = 'modal-page';
     modalElement.cssClass = 'my-custom-class';
     modalElement.componentProps = {
-        'image': imageUrl
+        'image': image
     };
 
     // present the modal
@@ -101,7 +110,8 @@ function presentModal(imageUrl) {
 }
 
 /**
- * dismissModal closes the modal without saving anything
+ * dismissModal closes the modal
+ * 
  */
 async function dismissModal() {
     let modal = document.querySelector('ion-modal');
@@ -117,12 +127,44 @@ async function dismissModal() {
 async function newArticle() {
     let title = await document.getElementById('modaltitle').getInputElement();
     let description = await document.getElementById('modaldescription').getInputElement();
-
-    let json = {
-        'title': title.value,
-        'brief': description.value,
-        'image': document.querySelector('ion-modal').componentProps.image
-    }
     
-    console.log(json);
+    // store data
+    setLocalStorage(title.value, description.value, document.querySelector('ion-modal').componentProps.image).then(function() {
+        // get data
+        getLocalStorage();
+        // closes modal
+        dismissModal();
+    });
+}
+
+/**
+ * save to the local storage
+ * 
+ * @param {*} title 
+ * @param {*} description 
+ * @param {*} image 
+ */
+async function setLocalStorage(title, description, image) {
+    await capacitorExports.Storage.set({
+        key: title,
+        value: JSON.stringify({
+            'title': title,
+            'brief': description,
+            'image': image
+        })
+    });
+}
+
+/**
+ * getLocalStorage gets data n the local storage and add them to the articles list
+ */
+async function getLocalStorage() {
+    let { keys } = await capacitorExports.Storage.keys();
+    for (let i = 0; i < keys.length ; i++) {
+        let response = await capacitorExports.Storage.get({key: keys[i]});
+        let json = JSON.parse(response.value);
+        if (!document.getElementById(json.title)) {
+            createElementCard(json.title, json.brief, "data:image/png;base64," + json.image);
+        }
+    }
 }
