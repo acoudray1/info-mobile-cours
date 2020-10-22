@@ -20,15 +20,14 @@
                     <ion-title>Blog DevFest Nantes</ion-title>
                 </ion-toolbar>
             </ion-header>
-                <ion-content>
-                    <ion-list id="data">
-                    </ion-list>
-                </ion-content>
-            <ion-footer>
-                <ion-toolbar>
-                    <ion-title>Footer</ion-title>
-                </ion-toolbar>
-            </ion-footer>
+            <ion-content>
+                <div id="data"></div>
+                <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+                    <ion-fab-button (click)="addPhotoToGallery()">
+                        <ion-icon name="camera"></ion-icon>
+                    </ion-fab-button>
+                </ion-fab>
+            </ion-content>
         </ion-app>
         <script src="app.js"></script>
     </body>

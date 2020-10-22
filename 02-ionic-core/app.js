@@ -6,7 +6,6 @@ fetch(DEV_FEST_GET_URL)
         return response.json();
     })
     .then(function(data) {
-        console.log(data);
         appendData(data);
     })
     .catch(function(err) {
