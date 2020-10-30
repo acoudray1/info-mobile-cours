@@ -49,7 +49,8 @@ export default class App extends React.Component {
     /**
      * Supprimer action
      */
-    supprimerAction(index) {
+    supprimerAction = (index) => {
+        console.log('suppr');
         this.setState(this.state.actions, () => {
             this.state.actions.splice(index, 1);
         });
@@ -58,7 +59,8 @@ export default class App extends React.Component {
     /**
      * Passer l'action à supprimer
      */
-    termineAction(index) {
+    terminerAction = (index) => {
+        console.log('term');
         this.setState(this.state.actions, () => {
             this.state.actions[index].isTerminated = true;
         });
@@ -71,8 +73,8 @@ export default class App extends React.Component {
             <View style={styles.conteneur}>
                 <ScrollView keyboardShouldPersistTaps='always' style={styles.content}>
                     <Entete/>
-                    <Saisie texteSaisie={texteSaisie} evtTexteModifie={(titre) => this.quandLaSaisieChange(titre)}/>
-                    <ListeActions actions={actions}/>
+                    <Saisie texteSaisie={texteSaisie} evtTexteModifie={(titre) => this.quandLaSaisieChange(titre)} />
+                    <ListeActions actions={actions} fnTerminer={this.terminerAction} fnSupprimer={this.supprimerAction} />
                     <BoutonCreer onValider={() => this.validerNouvelleAction()}/>
                 </ScrollView>
                 <Menu/>
