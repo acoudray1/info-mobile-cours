@@ -16,19 +16,23 @@ class MyApp extends StatelessWidget {
           backgroundColor: Color(0xffb74093),
           title: Text('Bonjour Flutter'),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Column(children: [
-              MyText('Hello this is Flutter', FontWeight.bold, 40),
-              MyText('by Axel', FontWeight.w200, 20),
-            ],),
-            Image.network('https://pbs.twimg.com/profile_images/1303350790590025736/lNtbVcql_400x400.jpg',
-              height: 350,
-              width: 350,
-            ),
-            BoutonContact(),
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(children: [
+                MyText('Hello this is Flutter', FontWeight.bold, 40),
+                MyText('by Axel', FontWeight.w200, 20),
+              ],),
+              SizedBox(height: 24,),
+              Image.network('https://pbs.twimg.com/profile_images/1303350790590025736/lNtbVcql_400x400.jpg',
+                height: 350,
+                width: 350,
+              ),
+              SizedBox(height: 24,),
+              BoutonContact(),
+            ],
+          ),
         ),
       ),
     );
