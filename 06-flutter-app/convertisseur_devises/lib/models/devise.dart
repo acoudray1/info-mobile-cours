@@ -24,4 +24,8 @@ extension DeviseExtension on Devise {
   String get libelle {
     return libelles[this];
   }
+
+  double convert(double initialValue, Devise deviseFinale) {
+    return initialValue * taux[deviseFinale] / taux[this];
+  }
 }

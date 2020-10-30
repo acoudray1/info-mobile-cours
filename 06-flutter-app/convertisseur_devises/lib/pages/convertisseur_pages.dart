@@ -16,6 +16,7 @@ class _ConvertisseurDevisePage extends State<ConvertisseurDevisePage> {
   Devise _deviseInitial; // devise initiale sélectionnée
   Devise _deviseFinale; // devise finale sélectionnée
   double _resultat; // le résultat de la conversion
+
   // définition des valeurs initiales
   @override
   void initState() {
@@ -24,6 +25,12 @@ class _ConvertisseurDevisePage extends State<ConvertisseurDevisePage> {
     _resultat = 0;
     _deviseInitial = Devise.EURO;
     _deviseFinale = Devise.DOLLAR;
+  }
+
+  void convertDevise() {
+    setState(() {
+      _resultat = _deviseInitial.convert(_valeur, _deviseFinale);
+    });
   }
 
   @override
@@ -39,6 +46,11 @@ class _ConvertisseurDevisePage extends State<ConvertisseurDevisePage> {
           Spacer(),
           TextField(
             style: AppStyle.inputStyle,
+            onChanged: (saisie) {
+              setState(() {
+                _valeur = double.parse(saisie);
+              });
+            },
           ),
           Spacer(),
           Text(
@@ -46,29 +58,39 @@ class _ConvertisseurDevisePage extends State<ConvertisseurDevisePage> {
             style: AppStyle.labelStyle,
           ),
           Spacer(),
-          DropdownButton(isExpanded: true, onChanged: (newVal) => true, items: [
-            DropdownMenuItem<Devise>(
-              child: Text('Val 1'),
-            ),
-            DropdownMenuItem<Devise>(
-              child: Text('Val 2'),
-            ),
-          ]),
+          DropdownButton(
+            value: _deviseInitial,
+            isExpanded: true,
+            onChanged: (newVal) => setState(() {
+              _deviseInitial = newVal;
+            }),
+            items: [ for (Devise devise in Devise.values)
+              DropdownMenuItem<Devise>(
+                child: Text(devise.libelle),
+                value: devise,
+              )
+            ],
+          ),
           Spacer(),
           Text('Vers', style: AppStyle.labelStyle),
           Spacer(),
-          DropdownButton(isExpanded: true, onChanged: (newVal) => true, items: [
-            DropdownMenuItem<Devise>(
-              child: Text('Val 1'),
-            ),
-            DropdownMenuItem<Devise>(
-              child: Text('Val 2'),
-            ),
-          ]),
+          DropdownButton(
+            value: _deviseFinale,
+            isExpanded: true,
+            onChanged: (newVal) => setState(() {
+              _deviseFinale = newVal;
+            }),
+            items: [ for (Devise devise in Devise.values)
+              DropdownMenuItem<Devise>(
+                child: Text(devise.libelle),
+                value: devise,
+              )
+            ]
+          ),
           Spacer(
             flex: 2,
           ),
-          ElevatedButton(onPressed: () => true, child: Text('Convertir')),
+          ElevatedButton(onPressed: () => this.convertDevise(), child: Text('Convertir')),
           Spacer(
             flex: 2,
           ),
