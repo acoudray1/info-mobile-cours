@@ -15,7 +15,7 @@ export default class App extends React.Component {
     // il y aura probalement d'autres informations à stocker
     state = {
         texteSaisie: '',
-        actions: []
+        actions: ['test', 'test2', 'test3']
     }
 
     /**
@@ -24,6 +24,7 @@ export default class App extends React.Component {
      * @param nouvelleSaisie la valeur saisie
      */
     quandLaSaisieChange(nouvelleSaisie) {
+        this.state.texteSaisie = nouvelleSaisie;
         console.log('la saisie à changée', nouvelleSaisie)
     }
 
@@ -31,18 +32,21 @@ export default class App extends React.Component {
      * Méthode invoquée lors du clic sur le bouton `Valider`.
      */
     validerNouvelleAction() {
+        this.setState(this.state.actions, () => {
+            this.state.actions.push(this.state.texteSaisie);
+        });
         console.log('Vous avez cliqué sur Valider !')
     }
 
     render() {
-        const {texteSaisie} = this.state
+        const {texteSaisie, actions} = this.state
 
         return (
             <View style={styles.conteneur}>
                 <ScrollView keyboardShouldPersistTaps='always' style={styles.content}>
                     <Entete/>
                     <Saisie texteSaisie={texteSaisie} evtTexteModifie={(titre) => this.quandLaSaisieChange(titre)}/>
-                    <ListeActions />
+                    <ListeActions actions={actions}/>
                     <BoutonCreer onValider={() => this.validerNouvelleAction()}/>
                 </ScrollView>
                 <Menu/>
