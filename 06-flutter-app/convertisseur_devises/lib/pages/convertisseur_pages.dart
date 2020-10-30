@@ -1,5 +1,7 @@
 import 'package:convertisseur_devises/models/devise.dart';
 import 'package:convertisseur_devises/styles.dart';
+import 'package:convertisseur_devises/widgets/liste_devise.dart';
+import 'package:convertisseur_devises/widgets/saisie_nombre.dart';
 import 'package:flutter/material.dart';
 
 class ConvertisseurDevisePage extends StatefulWidget {
@@ -44,8 +46,7 @@ class _ConvertisseurDevisePage extends State<ConvertisseurDevisePage> {
             style: AppStyle.labelStyle,
           ),
           Spacer(),
-          TextField(
-            style: AppStyle.inputStyle,
+          SaisieNombre(
             onChanged: (saisie) {
               setState(() {
                 _valeur = double.parse(saisie);
@@ -58,34 +59,20 @@ class _ConvertisseurDevisePage extends State<ConvertisseurDevisePage> {
             style: AppStyle.labelStyle,
           ),
           Spacer(),
-          DropdownButton(
-            value: _deviseInitial,
-            isExpanded: true,
+          ListeDevise(
+            devise: _deviseInitial,
             onChanged: (newVal) => setState(() {
               _deviseInitial = newVal;
             }),
-            items: [ for (Devise devise in Devise.values)
-              DropdownMenuItem<Devise>(
-                child: Text(devise.libelle),
-                value: devise,
-              )
-            ],
           ),
           Spacer(),
           Text('Vers', style: AppStyle.labelStyle),
           Spacer(),
-          DropdownButton(
-            value: _deviseFinale,
-            isExpanded: true,
+          ListeDevise(
+            devise: _deviseFinale,
             onChanged: (newVal) => setState(() {
               _deviseFinale = newVal;
             }),
-            items: [ for (Devise devise in Devise.values)
-              DropdownMenuItem<Devise>(
-                child: Text(devise.libelle),
-                value: devise,
-              )
-            ]
           ),
           Spacer(
             flex: 2,
