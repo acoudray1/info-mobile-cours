@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 
 class ListeDevise extends StatelessWidget {
 
-  ListeDevise({this.devise, this.onChanged});
+  ListeDevise({
+    Key key,
+    @required this.devise,
+    @required this.onChanged})
+  : super(key: key);
 
   final Devise devise;
   final void Function(Devise) onChanged;
