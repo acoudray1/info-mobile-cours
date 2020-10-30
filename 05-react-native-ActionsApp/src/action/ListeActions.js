@@ -6,7 +6,7 @@ import UneAction from './UneAction'
 const ListeActions = ({actions}) => {
     
     const renderItem = ({ item }) => (
-        <UneAction titre={item} />
+        <UneAction action={item} />
     );
     
     return (

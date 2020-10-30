@@ -15,7 +15,12 @@ export default class App extends React.Component {
     // il y aura probalement d'autres informations à stocker
     state = {
         texteSaisie: '',
-        actions: ['test', 'test2', 'test3']
+        actions: [
+            {
+                'titre': 'demo action',
+                'isTerminated': false,
+            }
+        ]
     }
 
     /**
@@ -33,9 +38,30 @@ export default class App extends React.Component {
      */
     validerNouvelleAction() {
         this.setState(this.state.actions, () => {
-            this.state.actions.push(this.state.texteSaisie);
+            this.state.actions.push({
+                'titre': this.state.texteSaisie,
+                'isTerminated': false
+            });
         });
         console.log('Vous avez cliqué sur Valider !')
+    }
+
+    /**
+     * Supprimer action
+     */
+    supprimerAction(index) {
+        this.setState(this.state.actions, () => {
+            this.state.actions.splice(index, 1);
+        });
+    }
+
+    /**
+     * Passer l'action à supprimer
+     */
+    termineAction(index) {
+        this.setState(this.state.actions, () => {
+            this.state.actions[index].isTerminated = true;
+        });
     }
 
     render() {

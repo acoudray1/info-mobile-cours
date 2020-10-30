@@ -13,15 +13,27 @@ import {StyleSheet, Text, TouchableHighlight} from 'react-native'
  * TODO 3. Si le nom du bouton est 'Supprimer', alors appliquer le style 'supprimer' à l'élément <Text>
  *
  */
-const BoutonAction = ({nom}) => (
-    <TouchableHighlight
-        underlayColor='#efefef'
-        style={styles.bouton}>
-        <Text style={styles.texte}>
-            {nom}
-        </Text>
-    </TouchableHighlight>
-)
+const BoutonAction = ({nom, action}) => {
+
+    const renderButton = ({ nom }) => {
+        if (nom == "supprimer") {
+            return styles.supprimer;
+        } else {
+            return styles.termine
+        }
+    }
+
+    return (
+        <TouchableHighlight
+            underlayColor='#efefef'
+            style={styles.bouton}>
+            <Text style={renderButton({nom})}>
+                {nom}
+            </Text>
+        </TouchableHighlight>
+    );
+}
+
 const styles = StyleSheet.create({
     bouton: {
         alignSelf: 'flex-end',
