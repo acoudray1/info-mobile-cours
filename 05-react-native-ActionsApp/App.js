@@ -20,7 +20,8 @@ export default class App extends React.Component {
                 'titre': 'demo action',
                 'isTerminated': false,
             }
-        ]
+        ],
+        filtre: 'toutes',
     }
 
     /**
@@ -50,7 +51,7 @@ export default class App extends React.Component {
      * Supprimer action
      */
     supprimerAction = (index) => {
-        console.log('suppr');
+        console.log('supprimer');
         this.setState(this.state.actions, () => {
             this.state.actions.splice(index, 1);
         });
@@ -60,24 +61,32 @@ export default class App extends React.Component {
      * Passer l'action à supprimer
      */
     terminerAction = (index) => {
-        console.log('term');
+        console.log('terminer');
         this.setState(this.state.actions, () => {
             this.state.actions[index].isTerminated = true;
         });
     }
 
+    /**
+     * Changer filtre 
+     * 'toutes', 'actives', 'terminees'
+     */
+    changerFiltre = (f) => {
+        this.setState({ filtre: f });
+    }
+
     render() {
-        const {texteSaisie, actions} = this.state
+        const {texteSaisie, actions, filtre} = this.state
 
         return (
             <View style={styles.conteneur}>
                 <ScrollView keyboardShouldPersistTaps='always' style={styles.content}>
                     <Entete/>
                     <Saisie texteSaisie={texteSaisie} evtTexteModifie={(titre) => this.quandLaSaisieChange(titre)} />
-                    <ListeActions actions={actions} fnTerminer={this.terminerAction} fnSupprimer={this.supprimerAction} />
+                    <ListeActions actions={actions} fnTerminer={this.terminerAction} fnSupprimer={this.supprimerAction} filtre={filtre} />
                     <BoutonCreer onValider={() => this.validerNouvelleAction()}/>
                 </ScrollView>
-                <Menu/>
+                <Menu fnFiltrer={this.changerFiltre}/>
             </View>
         )
     }

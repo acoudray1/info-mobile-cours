@@ -5,11 +5,11 @@ import OptionMenu from './OptionMenu'
 /**
  * Composant Menu.
  */
-const Menu = () => (
+const Menu = ({fnFiltrer}) => (
     <View style={styles.menu}>
-        <OptionMenu />
-        <OptionMenu />
-        <OptionMenu  />
+        <OptionMenu nom="Toutes" onclick={() => fnFiltrer('toutes')}/>
+        <OptionMenu nom="Actives" onclick={() => fnFiltrer('actives')}/>
+        <OptionMenu nom="Terminées" onclick={() => fnFiltrer('terminees')}/>
     </View>
 )
 
